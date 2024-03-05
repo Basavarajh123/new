@@ -13,7 +13,7 @@ let database=null;
 
 const app=express();
 app.use(express.json());
-
+app.use(cors());
 
 
 const inittializeDbAndServer=async()=>{
@@ -51,27 +51,6 @@ app.get('/users',async(req,res)=>{
     const data = await database.all(sqlQuery);
     res.send(data);
     
-})
-
-app.post("/signup",async(req,res)=>{
-
-    const{name,email,password}= req.body;
-
-    const sqlQuery=`INSERT INTO User(username,email,password)
-                                VALUES("${name}","${email}","${password}")
-    
-    `
-    await database.run(sqlQuery);
-    res.send('User Added Successfully');
-})
-
-app.post("/login", async(req,res)=>{
-    const {email,password}= req.body;
-    const sqlQuery=`SELECT * FROM User WHERE email="${email}" and password="${password}";`;
-    const data = await database.get(sqlQuery);
-    if (data!== undefined){
-        res.send('User Credentail are Correct');
-    }
 })
 
 
